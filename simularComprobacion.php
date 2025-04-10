@@ -26,8 +26,5 @@ else {
     exit;
 }
 
-echo $username;
-echo $password;
-echo 'funciono';
 
 ?>

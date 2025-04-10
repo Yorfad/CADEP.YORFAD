@@ -1,0 +1,60 @@
+[
+    {
+      "id": 1,
+      "area": "psicologia",
+      "fecha": "2025-04-10",
+      "hora_inicio": "08:00",
+      "hora_fin": "08:30",
+      "paciente": {
+        "id": 101,
+        "nombre": "Juan Pérez",
+        "telefono": "5555-1234",
+        "correo": "juan@example.com",
+        "expediente": []
+      },
+      "terapeuta": {
+        "id": 201,
+        "nombre": "Lic. Ana Gómez",
+        "especialidad": "Psicología"
+      }
+    },
+    {
+      "id": 2,
+      "area": "psicologia",
+      "fecha": "2025-04-10",
+      "hora_inicio": "08:30",
+      "hora_fin": "09:00",
+      "paciente": {
+        "id": 102,
+        "nombre": "María Rodríguez",
+        "telefono": "5555-5678",
+        "correo": "maria@example.com",
+        "expediente": []
+      },
+      "terapeuta": {
+        "id": 201,
+        "nombre": "Lic. Ana Gómez",
+        "especialidad": "Psicología"
+      }
+    },
+    {
+        "id": 3,
+        "area": "psicologia",
+        "fecha": "2025-04-10",
+        "hora_inicio": "09:30",
+        "hora_fin": "10:00",
+        "paciente": {
+          "id": 104,
+          "nombre": "María Rodríguez",
+          "telefono": "5555-5678",
+          "correo": "maria@example.com",
+          "expediente": []
+        },
+        "terapeuta": {
+          "id": 100,
+          "nombre": "Lic. Ana Gómez",
+          "especialidad": "Psicología"
+        }
+      }
+  ]
+  
