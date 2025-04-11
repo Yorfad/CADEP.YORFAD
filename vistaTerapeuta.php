@@ -25,7 +25,7 @@
     <label for="areaSelect">Selecciona un área:</label>
 
     <select class="select" id="areaSelector">
-        <option value="psicologia">Psicología</option>
+        <option value="psicologia">Psicologia</option>
         <option value="fisioterapia">Fisioterapia</option>
         <option value="linguistica">Lingüística</option>
         <option value="nutricion">Nutrición</option>
@@ -41,56 +41,6 @@
     <button class="btn btn-calendar" onclick="window.location.href='index.php?controller=appointments&action=create'">Crear Cita</button>
 </div>
 
-<!-- Modal Registrar Paciente -->
-<div id="modalPaciente" style="display:none; z-index: 1000; position:fixed; top:0; left:0; right:0; bottom:0; background-color:rgba(0,0,0,0.6);">
-<div style="background:#fff; width:500px; margin:100px auto; padding:20px; border-radius:10px;">
-<h3>Registrar Paciente</h3>
-
-<label>Nombre completo:</label>
-<input type="text" id="nombre_completo" style="width:100%" required><br><br>
-
-<label>CUI:</label>
-<input type="text" id="cui" style="width:100%" required><br><br>
-
-<label>Fecha de nacimiento:</label>
-<input type="date" id="fecha_nacimiento" style="width:100%"><br><br>
-
-<label>Sexo:</label>
-<select id="sexo" style="width:100%">
-  <option value="M">Masculino</option>
-  <option value="F">Femenino</option>
-  <option value="Otro">Otro</option>
-</select><br><br>
-
-<label>Dirección:</label>
-<textarea id="direccion" style="width:100%"></textarea><br><br>
-
-<label>Teléfono:</label>
-<input type="text" id="telefono" style="width:100%"><br><br>
-
-<label>Correo:</label>
-<input type="email" id="correo" style="width:100%"><br><br>
-
-<label>¿Estudia?</label>
-<input type="checkbox" id="estudia"><br><br>
-
-<label>Nivel educativo:</label>
-<select id="nivel_educativo" style="width:100%">
-  <option value="preescolar">Preescolar</option>
-  <option value="primaria">Primaria</option>
-  <option value="secundaria">Secundaria</option>
-  <option value="bachillerato">Bachillerato</option>
-  <option value="universidad">Universidad</option>
-  <option value="otro">Otro</option>
-</select><br><br>
-
-<label>Sede ID:</label>
-<input type="number" id="sede_id" style="width:100%" value="1"><br><br>
-
-<button onclick="guardarPaciente()">Guardar</button>
-<button onclick="cerrarModal()">Cancelar</button>
-</div>
-</div>
 
 
 </body>

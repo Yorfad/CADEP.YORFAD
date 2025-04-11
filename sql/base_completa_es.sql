@@ -198,3 +198,62 @@ CREATE TABLE tokens (
     activo BOOLEAN DEFAULT TRUE,
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 );
+
+CREATE TABLE recetas_medicas (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    paciente_id INT NOT NULL,
+    terapeuta_id INT NOT NULL,
+    fecha DATE NOT NULL,
+    descripcion TEXT NOT NULL,
+    instrucciones TEXT,
+    activo BOOLEAN DEFAULT TRUE,
+    sincronizado BOOLEAN DEFAULT FALSE,
+    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    actualizado_en TIMESTAMP NULL,
+    FOREIGN KEY (paciente_id) REFERENCES pacientes(id),
+    FOREIGN KEY (terapeuta_id) REFERENCES terapeutas(id)
+);
+
+
+-- 1. Crear un departamento
+INSERT INTO departamentos (nombre)
+VALUES ('Guatemala');
+
+-- 2. Crear un municipio vinculado
+INSERT INTO municipios (departamento_id, nombre)
+VALUES (1, 'Ciudad de Guatemala'); -- asumiendo que es el id=1
+
+-- 3. Crear una sede que use ese municipio
+INSERT INTO sedes (nombre, direccion, municipio_id, telefono)
+VALUES (
+  'Sede Central',
+  'Zona 1, Ciudad de Guatemala',
+  1,
+  '5555-1234'
+);
+
+INSERT INTO pacientes (
+  nombre_completo, cui, fecha_nacimiento, sexo, direccion, telefono, correo, estudia,
+  nivel_educativo, sede_id
+) VALUES (
+  'Responsable Predeterminado', '0000000000001', '1990-01-01', 'M',
+  'Dirección genérica', '5555-0000', 'responsable@ejemplo.com', 0,
+  'universidad', 1
+);
+
+INSERT INTO roles (nombre) VALUES ('terapeuta');
+
+INSERT INTO usuarios (
+  nombre, usuario, password, rol_id, departamento_id, municipio_id, sede_id
+) VALUES (
+  'Lic. Ana Terapeuta',
+  'ana.terapeuta',
+  '$2y$10$EjemploDeHashDePassword', 
+  1,
+  1, 1, 1
+);
+
+INSERT INTO especialidades (nombre) VALUES ('Psicología');
+
+INSERT INTO terapeutas (usuario_id, especialidad_id, sede_id, cui)
+VALUES (1, 1, 1, '1234 56789 0123');
