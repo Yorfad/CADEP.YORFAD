@@ -257,3 +257,8 @@ INSERT INTO especialidades (nombre) VALUES ('Psicología');
 
 INSERT INTO terapeutas (usuario_id, especialidad_id, sede_id, cui)
 VALUES (1, 1, 1, '1234 56789 0123');
+
+UPDATE especialidades
+SET nombre = 'Psicologia'
+WHERE id = 1;
+

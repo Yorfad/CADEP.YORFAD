@@ -1,6 +1,10 @@
 <?php
 header('Content-Type: application/json');
 
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
+
 $conexion = new mysqli("127.0.0.1", "admin", "admin123", "hospital", 3308);
 if ($conexion->connect_error) {
   echo json_encode([]);

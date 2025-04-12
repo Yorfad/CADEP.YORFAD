@@ -43,7 +43,7 @@
 
   <!-- Modal Registrar Paciente -->
       <div id="modalPaciente" style="display:none; z-index:1000; position:fixed; top:0; left:0; right:0; bottom:0; background-color:rgba(0,0,0,0.6);">
-        <div style="background:#fff; width:500px; margin:100px auto; padding:20px; border-radius:10px;">
+        <div style="background:#fff; width:500px; margin:50px auto; padding:20px; border-radius:10px;">
           <h3>Registrar Paciente</h3>
 
           <label>Nombre completo:</label>
