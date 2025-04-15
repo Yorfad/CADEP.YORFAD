@@ -47,6 +47,8 @@ async function login(event) {
           return;
       }
 
+      alert ("Bienvenido " + data);
+
       // Guardar token en localStorage para futuras peticiones
       localStorage.setItem("token", data.token);
       localStorage.setItem("usuario", JSON.stringify(data.usuario));

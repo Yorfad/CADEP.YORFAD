@@ -10,7 +10,7 @@ if (!$token) {
 }
 
 $db = new Database();
-$conn = $db->connect("mysql", "localhost", "mi_base", "root", "1234");
+$conn = $db->connect();
 
 $stmt = $conn->prepare("DELETE FROM tokens WHERE token = ?");
 $stmt->execute([$token]);

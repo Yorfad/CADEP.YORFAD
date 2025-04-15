@@ -13,7 +13,7 @@ if (!$usuario || !$password) {
 }
 
 $db = new Database();
-$conn = $db->connect("mysql", "localhost", "mi_base", "root", "1234");
+$conn = $db->connect();
 
 $stmt = $conn->prepare("
     SELECT u.id, u.usuario, u.nombre, u.rol_id, u.password, u.sede_id,
@@ -25,12 +25,6 @@ $stmt = $conn->prepare("
 ");
 $stmt->execute([':usuario' => $usuario]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
-
-file_put_contents("verificacion_debug.txt", 
-    "Ingresado: " . $password . PHP_EOL .
-    "Hash BD: " . $user['password'] . PHP_EOL .
-    "Resultado verify: " . (password_verify($password, $user['password']) ? 'OK' : 'FAIL')
-);
 
 
 if (!$user || !password_verify($password, $user['password'])) {

@@ -36,6 +36,10 @@
 
     <div id="calendar"></div>
 
+    <script>
+        alert("Bienvenido a la vista de terapeuta. Aquí puedes gestionar tus citas y pacientes.");
+    </script>
+
 <div class="group group-btn">
     <button class="btn btn-calendar" type="button" onclick="modal()">Registrar Paciente</button>
     <button class="btn btn-calendar" onclick="window.location.href='index.php?controller=appointments&action=create'">Crear Cita</button>

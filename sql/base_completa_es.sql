@@ -262,3 +262,4 @@ UPDATE especialidades
 SET nombre = 'Psicologia'
 WHERE id = 1;
 
+UPDATE usuarios SET password = '$2y$12$oVajYtELTL9chil3Bov.7uHn61twngZXQ5JzTNRI8CSy8nCA8nnL.' WHERE usuario = 'ana.terapeuta';

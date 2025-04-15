@@ -14,7 +14,7 @@ $token = $matches[1];
 
 // Conexión a la base
 $db = new Database();
-$conn = $db->connect("mysql", "localhost", "mi_base", "usuario", "password");
+$conn = $db->connect();
 
 // Validar token
 $stmt = $conn->prepare("SELECT * FROM tokens WHERE token = :token AND activo = 1 AND expira_en > NOW()");
