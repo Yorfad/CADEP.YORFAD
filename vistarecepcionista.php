@@ -13,6 +13,7 @@
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/main.min.js'></script>
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.10/locales/es.js'></script>
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="/js/config.js"></script>
     <script src="calendario.js" defer></script>
     <link rel="stylesheet" type="text/css" href="sass/sass.css"></link>
 </head>

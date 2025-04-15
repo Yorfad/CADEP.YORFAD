@@ -7,8 +7,10 @@ document.addEventListener('DOMContentLoaded', function () {
     let currentArea = 'psicologia';
   
     // Cargar y filtrar las citas
-    const cargarCitas = async (area) => {
-      const res = await fetch(`get_citas.php?area=${encodeURIComponent(area)}`);
+    const cargarCitas = async () => {
+      const area = JSON.parse(localStorage.getItem("usuario")).area;
+      const res = await fetch(`${API_BASE_URL}/endpoints/citas/get_by_area.php?area=${area}`);
+      console.log(res)
       const citas = await res.json();
     
       // Agrupar por fecha
@@ -62,10 +64,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
   });
 
+ 
+  const token = localStorage.getItem("token");
+  console.log("Token:", token);
+  const mostrarCitasDelDia = async (fecha) => {
+    const area = JSON.parse(localStorage.getItem("usuario")).area;
+    const token = localStorage.getItem("token");
+    console.log("Token:", token);
 
-
-  const mostrarCitasDelDia = async (fecha, area) => {
-    const res = await fetch(`get_citas.php?area=${encodeURIComponent(area)}`);
+    const res = await fetch(`${API_BASE_URL}/endpoints/citas/get_by_area.php?area=${area}`, {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    });
     const citas = await res.json();
     
 
@@ -289,47 +300,3 @@ function guardarCita() {
 }
 
 
-//*  parte de la conexion a bd no simulada
-
-async function login(event) {
-  event.preventDefault(); // Evita que se recargue la página
-
-  const usuario = document.getElementById("username-log-in").value;
-  const contrasena = document.getElementById("password-log-in").value;
-
-  try {
-      const res = await fetch("http://localhost/api/auth/login", {
-          method: "POST",
-          headers: {
-              "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ usuario, contrasena })
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-          alert(data.mensaje || "Credenciales incorrectas");
-          return;
-      }
-
-      // Guardar token en localStorage para futuras peticiones
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("usuario", JSON.stringify(data.usuario));
-
-      // Redireccionar según el rol
-      if (data.usuario.rol === "recepcionista") {
-          window.location.href = "/vistarecepcionista.php";
-      } else if (data.usuario.rol === "terapista" || data.usuario.rol === "terapeuta") {
-          window.location.href = "/vistaTerapeuta.php";
-      } else {
-          alert("Rol no reconocido: " + data.usuario.rol);
-      }
-
-  } catch (error) {
-      console.error("Error de conexión:", error);
-      alert("Error al intentar iniciar sesión.");
-  }
-
-  return false;
-}

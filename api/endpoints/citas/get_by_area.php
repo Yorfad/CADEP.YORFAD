@@ -1,17 +1,19 @@
 <?php
-header('Content-Type: application/json');
-
 ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+require_once __DIR__ . '/../../config/database.php';
+require_once __DIR__ . '/../../core/Response.php';
 
-$conexion = new mysqli("127.0.0.1", "admin", "admin123", "hospital", 3308);
-if ($conexion->connect_error) {
-  echo json_encode([]);
-  exit;
+$area = $_GET['area'] ?? null;
+
+if (!$area) {
+    Response::error("El parámetro 'area' es obligatorio", 400);
 }
 
-$area = isset($_GET['area']) ? $conexion->real_escape_string($_GET['area']) : null;
+$db = new Database();
+$conn = $db->connect();
 
 $query = "
   SELECT 
@@ -28,16 +30,15 @@ $query = "
   JOIN terapeutas t ON c.terapeuta_id = t.id
   JOIN usuarios u ON t.usuario_id = u.id
   JOIN especialidades e ON t.especialidad_id = e.id
+  WHERE e.nombre = ?
 ";
 
-if ($area) {
-  $query .= " WHERE e.nombre = '$area'";
-}
+$stmt = $conn->prepare($query);
+$stmt->execute([$area]);
 
-$resultado = $conexion->query($query);
 $citas = [];
 
-while ($fila = $resultado->fetch_assoc()) {
+while ($fila = $stmt->fetch(PDO::FETCH_ASSOC)) {
   $fecha = substr($fila['fecha'], 0, 10);
   $hora_inicio = substr($fila['fecha'], 11, 5);
   $hora_fin = date("H:i", strtotime($fila['fecha'] . " +30 minutes"));
@@ -63,5 +64,5 @@ while ($fila = $resultado->fetch_assoc()) {
   ];
 }
 
-echo json_encode($citas);
-$conexion->close();
+file_put_contents("debug_output.txt", json_encode($citas, JSON_PRETTY_PRINT));
+Response::json($citas);
