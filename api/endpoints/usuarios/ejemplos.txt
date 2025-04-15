@@ -1,0 +1,67 @@
+Acción				Método		Endpoint
+Crear usuario			POST		/usuarios/post.php
+Listar usuarios activos		GET		/usuarios/get.php
+Listar usuarios inactivos	GET		/usuarios/get_inactivos.php
+Actualizar usuario		PUT		/usuarios/put.php
+Desactivar usuario		DELETE		/usuarios/delete.php
+Activar usuario			PUT		/usuarios/activar.php
+Cambiar su propia contraseña	PUT		/usuarios/cambiar_password.php
+Admin cambia contraseña		PUT		/usuarios/cambiar_password_admin.php
+
+post.php
+crear usuarios 
+
+{
+  "nombre": "Carlos Ramírez",
+  "usuario": "cramirez",
+  "password": "segura123",
+  "rol_id": 2,
+  "departamento_id": 1,
+  "municipio_id": 3,
+  "sede_id": 1
+}
+
+get.php
+
+solo usuarios activos
+
+put.php
+
+{
+  "id": 2,
+  "nombre": "Luis Mendoza",
+  "rol_id": 3,
+  "departamento_id": 2,
+  "municipio_id": 4,
+  "sede_id": 1
+}
+
+delete.php
+
+eliminación lógica
+
+activar.php
+
+activa usuarios desactivados
+
+get_inactivos.php
+
+lista usuarios inactivos
+
+cambiar_password.php
+
+ambio de contraseña solo para usuarios autenticados
+
+{
+  "password_actual": "mi_clave_anterior",
+  "nueva_password": "nuevaClaveSegura123"
+}
+
+cambiar_password_admin.php
+
+cambio de contraseña de admin sin saber contraseña anterior
+
+{
+  "id": 2,
+  "nueva_password": "NuevaClave123"
+}

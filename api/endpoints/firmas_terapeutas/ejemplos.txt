@@ -1,0 +1,4 @@
+Acción				Método		Endpoint
+Subir o actualizar firma	POST		/firmas_terapeutas/upload.php
+Obtener firma			GET		/firmas_terapeutas/get.php
+Eliminar firma			DELETE		/firmas_terapeutas/delete.php

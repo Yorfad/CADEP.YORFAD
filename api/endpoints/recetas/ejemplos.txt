@@ -1,0 +1,8 @@
+Acción				Método		Endpoint
+Crear receta			POST		/recetas/post.php
+Obtener por paciente		GET		/recetas/get_by_paciente.php
+Obtener todas activas		GET		/recetas/get.php
+Actualizar receta		PUT		/recetas/put.php
+Desactivar receta		DELETE		/recetas/delete.php
+Activar receta			PUT		/recetas/activar.php
+Exportar como PDF con firma	GET		/recetas/export_pdf.php?id=1

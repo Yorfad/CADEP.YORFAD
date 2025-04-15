@@ -1,0 +1,16 @@
+get_completo.php
+{
+  "paciente": { ... },
+  "contactos": [ ... ],
+  "terapeuta_actual": { ... },
+  "reportes": [ ... ],
+  "archivos": [ ... ],
+  "citas": {
+    "pasadas": [ ... ],
+    "futuras": [ ... ]
+  },
+  "bitacora": [ ... ]
+}
+
+export_pdf.php
+exporta un pdf

@@ -1,0 +1,72 @@
+get.php
+
+🔐 Este endpoint está protegido por token
+Si el token no se envía, está expirado o es inválido, validate.php bloqueará el acceso automáticamente.
+
+✅ Qué puedes hacer luego
+Agregar filtros por sede, terapeuta, paciente, etc.
+
+Permitir búsqueda por nombre
+
+Hacer paginación con LIMIT y OFFSET
+
+Un JSON como este en el cuerpo del POST:
+
+json
+Copiar
+Editar
+{
+  "nombre_completo": "Juan Pérez",
+  "cui": "1234 56789 0001",
+  "fecha_nacimiento": "2000-05-01",
+  "sexo": "M",
+  "telefono": "5555-1234",
+  "direccion": "Colonia Jardines, San Salvador",
+  "correo": "juan@mail.com",
+  "estudia": true,
+  "nivel_educativo": "universidad",
+  "responsable_id": null,
+  "sede_id": 1
+}
+
+
+put.php
+
+{
+  "id": 2,
+  "nombre_completo": "Juan Actualizado",
+  "cui": "1234 56789 0001",
+  "fecha_nacimiento": "2000-05-01",
+  "sexo": "M",
+  "telefono": "7777-8888",
+  "direccion": "Dirección nueva",
+  "correo": "nuevo@mail.com",
+  "estudia": false,
+  "nivel_educativo": null,
+  "responsable_id": null,
+  "sede_id": 1
+}
+
+delete.php
+
+solo hace un update en estado eliminación lógica.
+
+get_inactivos.php
+
+solo ve los pacientes inactivos
+
+post.php
+
+se usa para crear nuevos usuarios
+
+activar.php
+
+se usa para activar un paciente desactivado
+
+Archivo / Endpoint	Método		Descripción
+get.php			GET		Listar todos los pacientes activos
+get_inactivos.php	GET		Listar solo pacientes desactivados
+post.php		POST		Crear un nuevo paciente (activo por defecto)
+put.php			PUT		Actualizar un paciente activo
+delete.php		DELETE		Desactivar (eliminación lógica) un paciente
+activar.php		PUT		Restaurar un paciente desactivado

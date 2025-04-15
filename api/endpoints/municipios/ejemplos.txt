@@ -1,0 +1,8 @@
+Acción				Método		Endpoint
+Listar activos			GET		/municipios/get.php
+Listar por departamento		GET		/municipios/get_by_departamento.php
+Crear				POST		/municipios/post.php
+Actualizar			PUT		/municipios/put.php
+Desactivar			DELETE		/municipios/delete.php
+Activar				PUT		/municipios/activar.php
+Listar inactivos		GET		/municipios/get_inactivos.php

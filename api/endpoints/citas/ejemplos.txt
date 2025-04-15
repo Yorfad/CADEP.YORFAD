@@ -1,0 +1,9 @@
+Acción				Método		Endpoint
+Listar citas activas		GET		/citas/get.php
+Listar por paciente		GET		/citas/get_by_paciente.php
+Listar por terapeuta		GET		/citas/get_by_terapeuta.php
+Crear nueva cita		POST		/citas/post.php
+Actualizar cita			PUT		/citas/put.php
+Cancelar/desactivar cita	DELETE		/citas/delete.php
+Activar cita			PUT		/citas/activar.php
+Listar citas inactivas		GET		/citas/get_inactivos.php

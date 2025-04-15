@@ -1,0 +1,11 @@
+Acción				Método		Endpoint
+Listar sedes activas		GET		/sedes/get.php
+Crear sede			POST		/sedes/post.php
+Actualizar sede			PUT		/sedes/put.php
+Desactivar sede			DELETE		/sedes/delete.php
+Activar sede			PUT		/sedes/activar.php
+Listar inactivas		GET		/sedes/get_inactivos.php
+
+misma lógica que los anteriores
+
+

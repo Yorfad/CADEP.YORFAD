@@ -1,0 +1,47 @@
+Archivo			Método		Descripción
+get.php			GET		Lista todos los terapeutas activos
+post.php		POST		Registra un nuevo terapeuta
+put.php			PUT		Actualiza un terapeuta activo
+delete.php		DELETE		Desactiva un terapeuta (lógica)
+activar.php		PUT		Reactiva un terapeuta desactivado
+get_inactivos.php	GET		Lista terapeutas desactivados
+
+get.php
+se usa para obtener solo los activos
+
+post.php
+
+{
+  "usuario_id": 2,
+  "especialidad_id": 1,
+  "sede_id": 1,
+  "cui": "1234 56789 0001"
+}
+
+put.php
+
+{
+  "id": 3,
+  "especialidad_id": 2,
+  "sede_id": 1,
+  "cui": "1234 56789 0002"
+}
+
+delete.php
+eliminación lógica de un terapeuta
+
+{
+  "id": 4
+}
+
+activar.php
+
+activar un usuario desactivado
+
+{
+  "id": 4
+}
+
+get_inactivos.php
+
+obtiene los terapeutas inactivos

@@ -1,0 +1,3 @@
+Ingresado: admin123
+Hash BD: $2y$12$oVajYtELTL9chil3Bov.7uHn61twngZXQ5JzTNRI8CSy8nCA8nnL.
+Resultado verify: OK

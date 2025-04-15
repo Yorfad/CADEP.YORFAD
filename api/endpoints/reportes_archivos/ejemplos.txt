@@ -1,0 +1,4 @@
+Acción				Método		Endpoint
+Subir archivo			POST		/reportes_archivos/upload.php
+Obtener archivos por reporte	GET		/reportes_archivos/get_by_reporte.php
+Eliminar archivo		DELETE		/reportes_archivos/delete.php

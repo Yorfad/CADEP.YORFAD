@@ -1,0 +1,5 @@
+Acción			Método		Endpoint
+Registrar acción	POST		/bitacora/post.php
+Listar registros	GET		/bitacora/get.php
+Filtrar por módulo	GET		/bitacora/get_by_modulo.php
+Filtrar por usuario	GET		/bitacora/get_by_usuario.php

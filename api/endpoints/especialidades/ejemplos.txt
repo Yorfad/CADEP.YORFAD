@@ -1,0 +1,52 @@
+Acción				Método		Endpoint
+Listar especialidades		GET		/especialidades/get.php
+Crear especialidad		POST		/especialidades/post.php
+Actualizar especialidad		PUT		/especialidades/put.php
+Desactivar especialidad		DELETE		/especialidades/delete.php
+Activar especialidad		PUT		/especialidades/activar.php
+Listar inactivas		GET		/especialidades/get_inactivos.php
+
+get.php
+
+obtiene las especialidades activas
+
+post.php
+
+crea nuevas especialidades
+
+{
+  "nombre": "Terapia Ocupacional",
+  "descripcion": "Tratamiento para habilidades motoras y sensoriales"
+}
+
+
+put.php
+
+actualiza especialidades
+
+{
+  "id": 2,
+  "nombre": "Fisioterapia General",
+  "descripcion": "Tratamientos de movilidad y rehabilitación postural"
+}
+
+
+delete.php
+
+eliminación lógica de especialidades
+
+{
+  "id": 3
+}
+
+activar.php
+
+activa una especialidad eliminada lógicamente
+
+{
+  "id": 3
+}
+
+get_inactivos.php
+
+recoge todos las especialidades inactivas

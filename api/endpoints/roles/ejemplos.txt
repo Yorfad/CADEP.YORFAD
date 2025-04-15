@@ -1,0 +1,57 @@
+Acción			Método		Endpoint
+Crear rol		POST		/roles/post.php
+Listar activos		GET		/roles/get.php
+Listar inactivos	GET		/roles/get_inactivos.php
+Actualizar rol		PUT		/roles/put.php
+Desactivar rol		DELETE		/roles/delete.php
+Activar rol		PUT		/roles/activar.php
+
+get.php
+
+obtiene todos los roles activos
+
+[
+  {
+    "id": 1,
+    "nombre": "Administrador",
+    "descripcion": "Control total del sistema"
+  },
+  {
+    "id": 2,
+    "nombre": "Terapeuta",
+    "descripcion": "Atiende pacientes y llena reportes"
+  }
+]
+
+post.php
+crear roles
+
+{
+  "nombre": "Coordinador",
+  "descripcion": "Encargado de revisar reportes y coordinar citas"
+}
+
+
+put.php
+actualizar rol
+{
+  "id": 2,
+  "nombre": "Terapeuta Senior",
+  "descripcion": "Terapeuta con permisos extendidos"
+}
+
+delete.php
+eliminación lógica
+{
+  "id": 3
+}
+
+activar.php
+activa un rol desactivado
+
+{
+  "id": 3
+}
+
+get_inactivos.php
+obtiene roles inactivos

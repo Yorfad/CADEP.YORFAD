@@ -1,0 +1,7 @@
+Acción			Método		Endpoint
+Listar activos		GET		/departamentos/get.php
+Crear			POST		/departamentos/post.php
+Actualizar		PUT		/departamentos/put.php
+Desactivar		DELETE		/departamentos/delete.php
+Activar			PUT		/departamentos/activar.php
+Listar inactivos	GET		/departamentos/get_inactivos.php

@@ -1,0 +1,3 @@
+Apache debe tener activado mod_rewrite
+
+El archivo .htaccess debe estar habilitado por el servidor

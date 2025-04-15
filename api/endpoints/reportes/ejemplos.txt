@@ -1,0 +1,8 @@
+Acción				Método		Endpoint
+Listar reportes activos		GET		/reportes/get.php
+Listar por paciente		GET		/reportes/get_by_paciente.php
+Crear nuevo reporte		POST		/reportes/post.php
+Actualizar reporte		PUT		/reportes/put.php
+Desactivar reporte		DELETE		/reportes/delete.php
+Activar reporte			PUT		/reportes/activar.php
+Listar inactivos		GET		/reportes/get_inactivos.php
