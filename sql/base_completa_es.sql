@@ -1,265 +1,597 @@
+CREATE DATABASE  IF NOT EXISTS `hospital` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
+USE `hospital`;
+-- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
+--
+-- Host: 127.0.0.1    Database: hospital
+-- ------------------------------------------------------
+-- Server version	8.0.41
 
--- Archivo en Español: Estructura completa de la base de datos con CUI y validaciones
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
-CREATE TABLE departamentos (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL
-);
+--
+-- Table structure for table `archivos_expediente`
+--
 
-CREATE TABLE municipios (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    departamento_id INT,
-    nombre VARCHAR(100) NOT NULL,
-    FOREIGN KEY (departamento_id) REFERENCES departamentos(id)
-);
+DROP TABLE IF EXISTS `archivos_expediente`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `archivos_expediente` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `reporte_id` int DEFAULT NULL,
+  `ruta_archivo` varchar(255) DEFAULT NULL,
+  `categoria` enum('examen','foto_tratamiento','receta_medica','otro') DEFAULT 'otro',
+  `descripcion` text,
+  `subido_en` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `reporte_id` (`reporte_id`),
+  CONSTRAINT `archivos_expediente_ibfk_1` FOREIGN KEY (`reporte_id`) REFERENCES `reportes_visitas` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-CREATE TABLE sedes (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL,
-    direccion TEXT,
-    municipio_id INT,
-    telefono VARCHAR(20),
-    FOREIGN KEY (municipio_id) REFERENCES municipios(id)
-);
+--
+-- Dumping data for table `archivos_expediente`
+--
 
-CREATE TABLE roles (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(50)
-);
+LOCK TABLES `archivos_expediente` WRITE;
+/*!40000 ALTER TABLE `archivos_expediente` DISABLE KEYS */;
+/*!40000 ALTER TABLE `archivos_expediente` ENABLE KEYS */;
+UNLOCK TABLES;
 
-CREATE TABLE usuarios (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(100),
-    usuario VARCHAR(50) UNIQUE,
-    password VARCHAR(255),
-    rol_id INT,
-    departamento_id INT,
-    municipio_id INT,
-    sede_id INT,
-    activo BOOLEAN DEFAULT TRUE,
-    sincronizado BOOLEAN DEFAULT FALSE,
-    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    actualizado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (rol_id) REFERENCES roles(id),
-    FOREIGN KEY (departamento_id) REFERENCES departamentos(id),
-    FOREIGN KEY (municipio_id) REFERENCES municipios(id),
-    FOREIGN KEY (sede_id) REFERENCES sedes(id)
-);
+--
+-- Table structure for table `asignaciones_paciente_terapeuta`
+--
 
-CREATE TABLE especialidades (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(100)
-);
+DROP TABLE IF EXISTS `asignaciones_paciente_terapeuta`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `asignaciones_paciente_terapeuta` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `paciente_id` int NOT NULL,
+  `terapeuta_id` int NOT NULL,
+  `asignado_por` int DEFAULT NULL,
+  `fecha_asignacion` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `activo` tinyint(1) DEFAULT '1',
+  PRIMARY KEY (`id`),
+  KEY `paciente_id` (`paciente_id`),
+  KEY `terapeuta_id` (`terapeuta_id`),
+  KEY `asignado_por` (`asignado_por`),
+  CONSTRAINT `asignaciones_paciente_terapeuta_ibfk_1` FOREIGN KEY (`paciente_id`) REFERENCES `pacientes` (`id`),
+  CONSTRAINT `asignaciones_paciente_terapeuta_ibfk_2` FOREIGN KEY (`terapeuta_id`) REFERENCES `terapeutas` (`id`),
+  CONSTRAINT `asignaciones_paciente_terapeuta_ibfk_3` FOREIGN KEY (`asignado_por`) REFERENCES `usuarios` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-CREATE TABLE terapeutas (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    usuario_id INT,
-    especialidad_id INT,
-    sede_id INT,
-    cui CHAR(15) UNIQUE NOT NULL,
-    CHECK (cui REGEXP '^[0-9]{4} [0-9]{5} [0-9]{4}$'),
-    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    actualizado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    sincronizado BOOLEAN DEFAULT FALSE,
-    FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
-    FOREIGN KEY (especialidad_id) REFERENCES especialidades(id),
-    FOREIGN KEY (sede_id) REFERENCES sedes(id)
-);
+--
+-- Dumping data for table `asignaciones_paciente_terapeuta`
+--
 
-CREATE TABLE firmas_digitales (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    terapeuta_id INT,
-    ruta_firma VARCHAR(255),
-    firmada_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    ip_firma VARCHAR(50),
-    FOREIGN KEY (terapeuta_id) REFERENCES terapeutas(id)
-);
+LOCK TABLES `asignaciones_paciente_terapeuta` WRITE;
+/*!40000 ALTER TABLE `asignaciones_paciente_terapeuta` DISABLE KEYS */;
+/*!40000 ALTER TABLE `asignaciones_paciente_terapeuta` ENABLE KEYS */;
+UNLOCK TABLES;
 
-CREATE TABLE bitacora_terapeutas (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    terapeuta_id INT,
-    accion TEXT,
-    realizada_por INT,
-    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (terapeuta_id) REFERENCES terapeutas(id),
-    FOREIGN KEY (realizada_por) REFERENCES usuarios(id)
-);
+--
+-- Table structure for table `bitacora_pacientes`
+--
 
-CREATE TABLE pacientes (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre_completo VARCHAR(100),
-    cui CHAR(15) UNIQUE NOT NULL,
-    fecha_nacimiento DATE,
-    sexo ENUM('M','F','Otro'),
-    direccion TEXT,
-    telefono VARCHAR(20),
-    correo VARCHAR(100),
-    estudia BOOLEAN DEFAULT FALSE,
-    nivel_educativo ENUM('preescolar', 'primaria', 'secundaria', 'bachillerato', 'universidad', 'otro'),
-    responsable_id INT DEFAULT NULL,
-    sede_id INT,
-    activo BOOLEAN DEFAULT TRUE,
-    sincronizado BOOLEAN DEFAULT FALSE,
-    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    actualizado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (responsable_id) REFERENCES pacientes(id),
-    FOREIGN KEY (sede_id) REFERENCES sedes(id)
-);
+DROP TABLE IF EXISTS `bitacora_pacientes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `bitacora_pacientes` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `paciente_id` int DEFAULT NULL,
+  `accion` text,
+  `realizada_por` int DEFAULT NULL,
+  `fecha` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `paciente_id` (`paciente_id`),
+  KEY `realizada_por` (`realizada_por`),
+  CONSTRAINT `bitacora_pacientes_ibfk_1` FOREIGN KEY (`paciente_id`) REFERENCES `pacientes` (`id`),
+  CONSTRAINT `bitacora_pacientes_ibfk_2` FOREIGN KEY (`realizada_por`) REFERENCES `usuarios` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `bitacora_pacientes`
+--
 
-CREATE TABLE contactos_pacientes (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    paciente_id INT,
-    nombre VARCHAR(100),
-    parentesco VARCHAR(50),
-    telefono VARCHAR(20),
-    correo VARCHAR(100),
-    FOREIGN KEY (paciente_id) REFERENCES pacientes(id)
-);
+LOCK TABLES `bitacora_pacientes` WRITE;
+/*!40000 ALTER TABLE `bitacora_pacientes` DISABLE KEYS */;
+/*!40000 ALTER TABLE `bitacora_pacientes` ENABLE KEYS */;
+UNLOCK TABLES;
 
-CREATE TABLE bitacora_pacientes (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    paciente_id INT,
-    accion TEXT,
-    realizada_por INT,
-    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (paciente_id) REFERENCES pacientes(id),
-    FOREIGN KEY (realizada_por) REFERENCES usuarios(id)
-);
+--
+-- Table structure for table `bitacora_terapeutas`
+--
 
-CREATE TABLE asignaciones_paciente_terapeuta (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    paciente_id INT NOT NULL,
-    terapeuta_id INT NOT NULL,
-    asignado_por INT,
-    fecha_asignacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    activo BOOLEAN DEFAULT TRUE,
-    FOREIGN KEY (paciente_id) REFERENCES pacientes(id),
-    FOREIGN KEY (terapeuta_id) REFERENCES terapeutas(id),
-    FOREIGN KEY (asignado_por) REFERENCES usuarios(id)
-);
+DROP TABLE IF EXISTS `bitacora_terapeutas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `bitacora_terapeutas` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `terapeuta_id` int DEFAULT NULL,
+  `accion` text,
+  `realizada_por` int DEFAULT NULL,
+  `fecha` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `terapeuta_id` (`terapeuta_id`),
+  KEY `realizada_por` (`realizada_por`),
+  CONSTRAINT `bitacora_terapeutas_ibfk_1` FOREIGN KEY (`terapeuta_id`) REFERENCES `terapeutas` (`id`),
+  CONSTRAINT `bitacora_terapeutas_ibfk_2` FOREIGN KEY (`realizada_por`) REFERENCES `usuarios` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-CREATE TABLE expedientes (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    paciente_id INT,
-    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    actualizado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    sincronizado BOOLEAN DEFAULT FALSE,
-    FOREIGN KEY (paciente_id) REFERENCES pacientes(id)
-);
+--
+-- Dumping data for table `bitacora_terapeutas`
+--
 
-CREATE TABLE reportes_visitas (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    expediente_id INT,
-    terapeuta_id INT,
-    fecha DATE,
-    observaciones TEXT,
-    siguiente_cita DATE,
-    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    actualizado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    sincronizado BOOLEAN DEFAULT FALSE,
-    FOREIGN KEY (expediente_id) REFERENCES expedientes(id),
-    FOREIGN KEY (terapeuta_id) REFERENCES terapeutas(id)
-);
+LOCK TABLES `bitacora_terapeutas` WRITE;
+/*!40000 ALTER TABLE `bitacora_terapeutas` DISABLE KEYS */;
+/*!40000 ALTER TABLE `bitacora_terapeutas` ENABLE KEYS */;
+UNLOCK TABLES;
 
-CREATE TABLE archivos_expediente (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    reporte_id INT,
-    ruta_archivo VARCHAR(255),
-    categoria ENUM('examen', 'foto_tratamiento', 'receta_medica', 'otro') DEFAULT 'otro',
-    descripcion TEXT,
-    subido_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (reporte_id) REFERENCES reportes_visitas(id)
-);
+--
+-- Table structure for table `citas`
+--
 
-CREATE TABLE citas (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    paciente_id INT,
-    terapeuta_id INT,
-    sede_id INT,
-    fecha DATETIME,
-    motivo TEXT,
-    estado ENUM('pendiente', 'realizada', 'cancelada', 'reprogramada') DEFAULT 'pendiente',
-    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    actualizado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (paciente_id) REFERENCES pacientes(id),
-    FOREIGN KEY (terapeuta_id) REFERENCES terapeutas(id),
-    FOREIGN KEY (sede_id) REFERENCES sedes(id)
-);
+DROP TABLE IF EXISTS `citas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `citas` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `paciente_id` int DEFAULT NULL,
+  `terapeuta_id` int DEFAULT NULL,
+  `sede_id` int DEFAULT NULL,
+  `fecha` datetime DEFAULT NULL,
+  `motivo` text,
+  `estado` enum('pendiente','realizada','cancelada','reprogramada') DEFAULT 'pendiente',
+  `creado_en` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `actualizado_en` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `paciente_id` (`paciente_id`),
+  KEY `terapeuta_id` (`terapeuta_id`),
+  KEY `sede_id` (`sede_id`),
+  CONSTRAINT `citas_ibfk_1` FOREIGN KEY (`paciente_id`) REFERENCES `pacientes` (`id`),
+  CONSTRAINT `citas_ibfk_2` FOREIGN KEY (`terapeuta_id`) REFERENCES `terapeutas` (`id`),
+  CONSTRAINT `citas_ibfk_3` FOREIGN KEY (`sede_id`) REFERENCES `sedes` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `citas`
+--
 
+LOCK TABLES `citas` WRITE;
+/*!40000 ALTER TABLE `citas` DISABLE KEYS */;
+INSERT INTO `citas` VALUES (1,2,1,NULL,'2025-04-10 16:23:00','es tonto','pendiente','2025-04-10 22:23:16','2025-04-10 22:23:16'),(2,3,1,NULL,'2025-04-11 22:15:00','motivo','pendiente','2025-04-11 04:15:19','2025-04-11 04:15:19'),(3,2,1,NULL,'2025-04-11 01:28:00','motivo2','pendiente','2025-04-11 06:27:34','2025-04-11 06:27:34'),(4,2,1,NULL,'2025-04-11 08:30:00','motivo3','reprogramada','2025-04-11 06:28:00','2025-04-11 07:29:44'),(5,2,1,NULL,'2025-04-12 11:30:00','motivo3','cancelada','2025-04-11 06:54:33','2025-04-11 07:32:12');
+/*!40000 ALTER TABLE `citas` ENABLE KEYS */;
+UNLOCK TABLES;
 
-CREATE TABLE tokens (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    usuario_id INT NOT NULL,
-    token VARCHAR(255) NOT NULL,
-    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    expira_en TIMESTAMP NOT NULL,
-    activo BOOLEAN DEFAULT TRUE,
-    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
-);
+--
+-- Table structure for table `contactos_pacientes`
+--
 
-CREATE TABLE recetas_medicas (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    paciente_id INT NOT NULL,
-    terapeuta_id INT NOT NULL,
-    fecha DATE NOT NULL,
-    descripcion TEXT NOT NULL,
-    instrucciones TEXT,
-    activo BOOLEAN DEFAULT TRUE,
-    sincronizado BOOLEAN DEFAULT FALSE,
-    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    actualizado_en TIMESTAMP NULL,
-    FOREIGN KEY (paciente_id) REFERENCES pacientes(id),
-    FOREIGN KEY (terapeuta_id) REFERENCES terapeutas(id)
-);
+DROP TABLE IF EXISTS `contactos_pacientes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `contactos_pacientes` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `paciente_id` int DEFAULT NULL,
+  `nombre` varchar(100) DEFAULT NULL,
+  `parentesco` varchar(50) DEFAULT NULL,
+  `telefono` varchar(20) DEFAULT NULL,
+  `correo` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `paciente_id` (`paciente_id`),
+  CONSTRAINT `contactos_pacientes_ibfk_1` FOREIGN KEY (`paciente_id`) REFERENCES `pacientes` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
+--
+-- Dumping data for table `contactos_pacientes`
+--
 
--- 1. Crear un departamento
-INSERT INTO departamentos (nombre)
-VALUES ('Guatemala');
+LOCK TABLES `contactos_pacientes` WRITE;
+/*!40000 ALTER TABLE `contactos_pacientes` DISABLE KEYS */;
+/*!40000 ALTER TABLE `contactos_pacientes` ENABLE KEYS */;
+UNLOCK TABLES;
 
--- 2. Crear un municipio vinculado
-INSERT INTO municipios (departamento_id, nombre)
-VALUES (1, 'Ciudad de Guatemala'); -- asumiendo que es el id=1
+--
+-- Table structure for table `departamentos`
+--
 
--- 3. Crear una sede que use ese municipio
-INSERT INTO sedes (nombre, direccion, municipio_id, telefono)
-VALUES (
-  'Sede Central',
-  'Zona 1, Ciudad de Guatemala',
-  1,
-  '5555-1234'
-);
+DROP TABLE IF EXISTS `departamentos`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `departamentos` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-INSERT INTO pacientes (
-  nombre_completo, cui, fecha_nacimiento, sexo, direccion, telefono, correo, estudia,
-  nivel_educativo, sede_id
-) VALUES (
-  'Responsable Predeterminado', '0000000000001', '1990-01-01', 'M',
-  'Dirección genérica', '5555-0000', 'responsable@ejemplo.com', 0,
-  'universidad', 1
-);
+--
+-- Dumping data for table `departamentos`
+--
 
-INSERT INTO roles (nombre) VALUES ('terapeuta');
+LOCK TABLES `departamentos` WRITE;
+/*!40000 ALTER TABLE `departamentos` DISABLE KEYS */;
+INSERT INTO `departamentos` VALUES (1,'Guatemala');
+/*!40000 ALTER TABLE `departamentos` ENABLE KEYS */;
+UNLOCK TABLES;
 
-INSERT INTO usuarios (
-  nombre, usuario, password, rol_id, departamento_id, municipio_id, sede_id
-) VALUES (
-  'Lic. Ana Terapeuta',
-  'ana.terapeuta',
-  '$2y$10$EjemploDeHashDePassword', 
-  1,
-  1, 1, 1
-);
+--
+-- Table structure for table `especialidades`
+--
 
-INSERT INTO especialidades (nombre) VALUES ('Psicología');
+DROP TABLE IF EXISTS `especialidades`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `especialidades` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
-INSERT INTO terapeutas (usuario_id, especialidad_id, sede_id, cui)
-VALUES (1, 1, 1, '1234 56789 0123');
+--
+-- Dumping data for table `especialidades`
+--
 
-UPDATE especialidades
-SET nombre = 'Psicologia'
-WHERE id = 1;
+LOCK TABLES `especialidades` WRITE;
+/*!40000 ALTER TABLE `especialidades` DISABLE KEYS */;
+INSERT INTO `especialidades` VALUES (1,'Psicologia');
+/*!40000 ALTER TABLE `especialidades` ENABLE KEYS */;
+UNLOCK TABLES;
 
-UPDATE usuarios SET password = '$2y$12$oVajYtELTL9chil3Bov.7uHn61twngZXQ5JzTNRI8CSy8nCA8nnL.' WHERE usuario = 'ana.terapeuta';
+--
+-- Table structure for table `expedientes`
+--
+
+DROP TABLE IF EXISTS `expedientes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `expedientes` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `paciente_id` int DEFAULT NULL,
+  `creado_en` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `actualizado_en` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `sincronizado` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `paciente_id` (`paciente_id`),
+  CONSTRAINT `expedientes_ibfk_1` FOREIGN KEY (`paciente_id`) REFERENCES `pacientes` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `expedientes`
+--
+
+LOCK TABLES `expedientes` WRITE;
+/*!40000 ALTER TABLE `expedientes` DISABLE KEYS */;
+/*!40000 ALTER TABLE `expedientes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `firmas_digitales`
+--
+
+DROP TABLE IF EXISTS `firmas_digitales`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `firmas_digitales` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `terapeuta_id` int DEFAULT NULL,
+  `ruta_firma` varchar(255) DEFAULT NULL,
+  `firmada_en` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `ip_firma` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `terapeuta_id` (`terapeuta_id`),
+  CONSTRAINT `firmas_digitales_ibfk_1` FOREIGN KEY (`terapeuta_id`) REFERENCES `terapeutas` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `firmas_digitales`
+--
+
+LOCK TABLES `firmas_digitales` WRITE;
+/*!40000 ALTER TABLE `firmas_digitales` DISABLE KEYS */;
+/*!40000 ALTER TABLE `firmas_digitales` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `municipios`
+--
+
+DROP TABLE IF EXISTS `municipios`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `municipios` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `departamento_id` int DEFAULT NULL,
+  `nombre` varchar(100) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `departamento_id` (`departamento_id`),
+  CONSTRAINT `municipios_ibfk_1` FOREIGN KEY (`departamento_id`) REFERENCES `departamentos` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `municipios`
+--
+
+LOCK TABLES `municipios` WRITE;
+/*!40000 ALTER TABLE `municipios` DISABLE KEYS */;
+INSERT INTO `municipios` VALUES (1,1,'Ciudad de Guatemala');
+/*!40000 ALTER TABLE `municipios` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `pacientes`
+--
+
+DROP TABLE IF EXISTS `pacientes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `pacientes` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nombre_completo` varchar(100) DEFAULT NULL,
+  `cui` char(15) NOT NULL,
+  `fecha_nacimiento` date DEFAULT NULL,
+  `sexo` enum('M','F','Otro') DEFAULT NULL,
+  `direccion` text,
+  `telefono` varchar(20) DEFAULT NULL,
+  `correo` varchar(100) DEFAULT NULL,
+  `estudia` tinyint(1) DEFAULT '0',
+  `nivel_educativo` enum('preescolar','primaria','secundaria','bachillerato','universidad','otro') DEFAULT NULL,
+  `responsable_id` int DEFAULT NULL,
+  `sede_id` int DEFAULT NULL,
+  `activo` tinyint(1) DEFAULT '1',
+  `sincronizado` tinyint(1) DEFAULT '0',
+  `creado_en` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `actualizado_en` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `cui` (`cui`),
+  KEY `responsable_id` (`responsable_id`),
+  KEY `sede_id` (`sede_id`),
+  CONSTRAINT `pacientes_ibfk_1` FOREIGN KEY (`responsable_id`) REFERENCES `pacientes` (`id`),
+  CONSTRAINT `pacientes_ibfk_2` FOREIGN KEY (`sede_id`) REFERENCES `sedes` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `pacientes`
+--
+
+LOCK TABLES `pacientes` WRITE;
+/*!40000 ALTER TABLE `pacientes` DISABLE KEYS */;
+INSERT INTO `pacientes` VALUES (2,'Responsable Predeterminado','0000000000001','1990-01-01','M','Direccin genrica','5555-0000','responsable@ejemplo.com',0,'universidad',NULL,1,1,0,'2025-04-10 21:10:48','2025-04-10 21:10:48'),(3,'Yair Alexander Morales Mejìa','2828070120204','2004-05-04','M','Estancia de la Virgen, Colonia El Porvenir','48393255','yairmorales267@gmail.com',1,'universidad',NULL,1,1,0,'2025-04-10 21:14:27','2025-04-10 21:14:27');
+/*!40000 ALTER TABLE `pacientes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `reportes_visitas`
+--
+
+DROP TABLE IF EXISTS `reportes_visitas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `reportes_visitas` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `expediente_id` int DEFAULT NULL,
+  `terapeuta_id` int DEFAULT NULL,
+  `fecha` date DEFAULT NULL,
+  `observaciones` text,
+  `siguiente_cita` date DEFAULT NULL,
+  `creado_en` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `actualizado_en` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `sincronizado` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `expediente_id` (`expediente_id`),
+  KEY `terapeuta_id` (`terapeuta_id`),
+  CONSTRAINT `reportes_visitas_ibfk_1` FOREIGN KEY (`expediente_id`) REFERENCES `expedientes` (`id`),
+  CONSTRAINT `reportes_visitas_ibfk_2` FOREIGN KEY (`terapeuta_id`) REFERENCES `terapeutas` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `reportes_visitas`
+--
+
+LOCK TABLES `reportes_visitas` WRITE;
+/*!40000 ALTER TABLE `reportes_visitas` DISABLE KEYS */;
+/*!40000 ALTER TABLE `reportes_visitas` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `roles`
+--
+
+DROP TABLE IF EXISTS `roles`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `roles` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(50) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `roles`
+--
+
+LOCK TABLES `roles` WRITE;
+/*!40000 ALTER TABLE `roles` DISABLE KEYS */;
+INSERT INTO `roles` VALUES (1,'terapeuta');
+/*!40000 ALTER TABLE `roles` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `sedes`
+--
+
+DROP TABLE IF EXISTS `sedes`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sedes` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(100) NOT NULL,
+  `direccion` text,
+  `municipio_id` int DEFAULT NULL,
+  `telefono` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `municipio_id` (`municipio_id`),
+  CONSTRAINT `sedes_ibfk_1` FOREIGN KEY (`municipio_id`) REFERENCES `municipios` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `sedes`
+--
+
+LOCK TABLES `sedes` WRITE;
+/*!40000 ALTER TABLE `sedes` DISABLE KEYS */;
+INSERT INTO `sedes` VALUES (1,'Sede Central','Zona 1, Ciudad de Guatemala',1,'5555-1234');
+/*!40000 ALTER TABLE `sedes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `terapeutas`
+--
+
+DROP TABLE IF EXISTS `terapeutas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `terapeutas` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `usuario_id` int DEFAULT NULL,
+  `especialidad_id` int DEFAULT NULL,
+  `sede_id` int DEFAULT NULL,
+  `cui` char(15) NOT NULL,
+  `creado_en` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `actualizado_en` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `sincronizado` tinyint(1) DEFAULT '0',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `cui` (`cui`),
+  KEY `usuario_id` (`usuario_id`),
+  KEY `especialidad_id` (`especialidad_id`),
+  KEY `sede_id` (`sede_id`),
+  CONSTRAINT `terapeutas_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`),
+  CONSTRAINT `terapeutas_ibfk_2` FOREIGN KEY (`especialidad_id`) REFERENCES `especialidades` (`id`),
+  CONSTRAINT `terapeutas_ibfk_3` FOREIGN KEY (`sede_id`) REFERENCES `sedes` (`id`),
+  CONSTRAINT `terapeutas_chk_1` CHECK (regexp_like(`cui`,_latin1'^[0-9]{4} [0-9]{5} [0-9]{4}$'))
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `terapeutas`
+--
+
+LOCK TABLES `terapeutas` WRITE;
+/*!40000 ALTER TABLE `terapeutas` DISABLE KEYS */;
+INSERT INTO `terapeutas` VALUES (1,1,1,1,'1234 56789 0123','2025-04-10 21:39:56','2025-04-10 21:39:56',0);
+/*!40000 ALTER TABLE `terapeutas` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `tokens`
+--
+
+DROP TABLE IF EXISTS `tokens`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tokens` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `usuario_id` int NOT NULL,
+  `token` varchar(255) NOT NULL,
+  `creado_en` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `expira_en` timestamp NOT NULL,
+  `activo` tinyint(1) DEFAULT '1',
+  PRIMARY KEY (`id`),
+  KEY `usuario_id` (`usuario_id`),
+  CONSTRAINT `tokens_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tokens`
+--
+
+LOCK TABLES `tokens` WRITE;
+/*!40000 ALTER TABLE `tokens` DISABLE KEYS */;
+INSERT INTO `tokens` VALUES (1,1,'b5c294e406d83fea71524933105c7a1e9cf7882031e2fcb5c8ba1aa7f1a8738f','2025-04-15 04:09:49','2025-04-16 04:09:49',1),(2,1,'0eca8df82865b0e66b5888dc6d313454c3a2baec5f4e15c1b9d80f8e8a454ece','2025-04-15 04:22:28','2025-04-16 04:22:28',1),(3,1,'dfd77067edc059970f5acdaba6acfe8ae52feaa16ad2816d93821cde006761d6','2025-04-15 04:29:35','2025-04-16 04:29:35',1),(4,1,'5eff73f0afa2bf712fb994d95475b8507f86968a3308eb045af8c20a52de7b90','2025-04-15 04:33:15','2025-04-16 04:33:15',1),(5,1,'0e60bdb951ea2135b5170b9b6565e73df83338fff176bb0e913e1c65fccfb490','2025-04-15 06:13:06','2025-04-16 06:13:06',1),(6,1,'7407c2ab14504d711638eee037725dda3bc4b23cf679d7d1d0b94e49b8909cb1','2025-04-15 06:22:41','2025-04-16 06:22:41',1),(7,1,'99713eb06869f1696c4d9bc7ecc08f2145529ba4c39bd77405b93f908206dd92','2025-04-15 07:15:35','2025-04-16 07:15:35',1),(8,1,'a9f8d79be3c76d4d9e5fe2d059ccbe44848a463c6e2e97dd2a85febc8b7423b1','2025-04-15 07:29:52','2025-04-16 07:29:52',1),(9,1,'61b9ada918c0a9dde376a5c6fcd04d64b8d905a74813d8d15ab61de328d5917e','2025-04-15 07:31:17','2025-04-16 07:31:17',1),(10,1,'312383b1116ef69d230b73a3535a5f6d1246daf25deb81c10bc0977d9b498141','2025-04-15 07:32:37','2025-04-16 07:32:37',1);
+/*!40000 ALTER TABLE `tokens` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `usuarios`
+--
+
+DROP TABLE IF EXISTS `usuarios`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `usuarios` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `nombre` varchar(100) DEFAULT NULL,
+  `usuario` varchar(50) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `rol_id` int DEFAULT NULL,
+  `departamento_id` int DEFAULT NULL,
+  `municipio_id` int DEFAULT NULL,
+  `sede_id` int DEFAULT NULL,
+  `activo` tinyint(1) DEFAULT '1',
+  `sincronizado` tinyint(1) DEFAULT '0',
+  `creado_en` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `actualizado_en` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `usuario` (`usuario`),
+  KEY `rol_id` (`rol_id`),
+  KEY `departamento_id` (`departamento_id`),
+  KEY `municipio_id` (`municipio_id`),
+  KEY `sede_id` (`sede_id`),
+  CONSTRAINT `usuarios_ibfk_1` FOREIGN KEY (`rol_id`) REFERENCES `roles` (`id`),
+  CONSTRAINT `usuarios_ibfk_2` FOREIGN KEY (`departamento_id`) REFERENCES `departamentos` (`id`),
+  CONSTRAINT `usuarios_ibfk_3` FOREIGN KEY (`municipio_id`) REFERENCES `municipios` (`id`),
+  CONSTRAINT `usuarios_ibfk_4` FOREIGN KEY (`sede_id`) REFERENCES `sedes` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `usuarios`
+--
+
+LOCK TABLES `usuarios` WRITE;
+/*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
+INSERT INTO `usuarios` VALUES (1,'Lic. Ana Terapeuta','ana.terapeuta','$2y$12$oVajYtELTL9chil3Bov.7uHn61twngZXQ5JzTNRI8CSy8nCA8nnL.',1,1,1,1,1,0,'2025-04-10 21:39:41','2025-04-15 04:08:30');
+/*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping events for database 'hospital'
+--
+
+--
+-- Dumping routines for database 'hospital'
+--
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2025-04-15 14:10:06
