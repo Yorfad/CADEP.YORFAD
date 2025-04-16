@@ -1,9 +1,16 @@
 <?php
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 require_once __DIR__ . '/../config/database.php';
 require_once __DIR__ . '/../core/Response.php';
 
 $data = json_decode(file_get_contents("php://input"), true);
 file_put_contents("debug_login.txt", file_get_contents("php://input"));
+
+
+
 
 $usuario = $data['usuario'] ?? '';
 $password = $data['password'] ?? '';
@@ -17,8 +24,8 @@ $conn = $db->connect();
 
 $stmt = $conn->prepare("
     SELECT u.id, u.usuario, u.nombre, u.rol_id, u.password, u.sede_id,
-           r.nombre AS rol, s.nombre AS sede,
-           e.id AS especialidad_id, e.nombre AS area
+    r.nombre AS rol, s.nombre AS sede,
+    e.id AS especialidad_id, e.nombre AS area
     FROM usuarios u
     JOIN roles r ON u.rol_id = r.id
     LEFT JOIN sedes s ON u.sede_id = s.id
@@ -26,6 +33,7 @@ $stmt = $conn->prepare("
     LEFT JOIN especialidades e ON t.especialidad_id = e.id
     WHERE u.usuario = :usuario AND u.activo = 1
 ");
+file_put_contents("debug_login.txt", "Paso X completado\n", FILE_APPEND);
 
 $stmt->execute([':usuario' => $usuario]);
 $user = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -34,6 +42,8 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
 if (!$user || !password_verify($password, $user['password'])) {
     Response::error("Credenciales inválidas", 401);
 }
+file_put_contents("debug_login.txt", "Paso X completado\n", FILE_APPEND);
+
 
 $token = bin2hex(random_bytes(32));
 $expira_en = date('Y-m-d H:i:s', strtotime('+24 hours'));
@@ -47,6 +57,7 @@ $stmt->execute([
     ':token' => $token,
     ':expira_en' => $expira_en
 ]);
+file_put_contents("debug_login.txt", "Paso X completado\n", FILE_APPEND);
 
 Response::json([
     "token" => $token,
@@ -62,3 +73,4 @@ Response::json([
         "sede" => $user['sede']
     ]
 ]);
+file_put_contents("debug_login.txt", "Paso X completado\n", FILE_APPEND);

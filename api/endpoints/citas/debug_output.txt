@@ -2,14 +2,14 @@
     {
         "id": 1,
         "title": "Responsable Predeterminado",
-        "start": "2025-04-10 16:23:00",
-        "fecha": "2025-04-10",
-        "hora_inicio": "16:23",
-        "hora_fin": "16:53",
+        "start": "2025-04-12 10:00:00",
+        "fecha": "2025-04-12",
+        "hora_inicio": "10:00",
+        "hora_fin": "10:30",
         "estado": "pendiente",
         "area": "Psicologia",
         "paciente": {
-            "id": 2,
+            "id": 1,
             "nombre": "Responsable Predeterminado"
         },
         "terapeuta": {
@@ -20,34 +20,15 @@
     },
     {
         "id": 2,
-        "title": "Yair Alexander Morales Mej\u00eca",
-        "start": "2025-04-11 22:15:00",
-        "fecha": "2025-04-11",
-        "hora_inicio": "22:15",
-        "hora_fin": "22:45",
-        "estado": "pendiente",
-        "area": "Psicologia",
-        "paciente": {
-            "id": 3,
-            "nombre": "Yair Alexander Morales Mej\u00eca"
-        },
-        "terapeuta": {
-            "id": 1,
-            "nombre": "Lic. Ana Terapeuta"
-        },
-        "color": "#3788d8"
-    },
-    {
-        "id": 3,
         "title": "Responsable Predeterminado",
-        "start": "2025-04-11 01:28:00",
-        "fecha": "2025-04-11",
-        "hora_inicio": "01:28",
-        "hora_fin": "01:58",
+        "start": "2025-04-15 11:00:00",
+        "fecha": "2025-04-15",
+        "hora_inicio": "11:00",
+        "hora_fin": "11:30",
         "estado": "pendiente",
         "area": "Psicologia",
         "paciente": {
-            "id": 2,
+            "id": 1,
             "nombre": "Responsable Predeterminado"
         },
         "terapeuta": {
@@ -55,43 +36,5 @@
             "nombre": "Lic. Ana Terapeuta"
         },
         "color": "#3788d8"
-    },
-    {
-        "id": 4,
-        "title": "Responsable Predeterminado",
-        "start": "2025-04-11 08:30:00",
-        "fecha": "2025-04-11",
-        "hora_inicio": "08:30",
-        "hora_fin": "09:00",
-        "estado": "reprogramada",
-        "area": "Psicologia",
-        "paciente": {
-            "id": 2,
-            "nombre": "Responsable Predeterminado"
-        },
-        "terapeuta": {
-            "id": 1,
-            "nombre": "Lic. Ana Terapeuta"
-        },
-        "color": "#28a745"
-    },
-    {
-        "id": 5,
-        "title": "Responsable Predeterminado",
-        "start": "2025-04-12 11:30:00",
-        "fecha": "2025-04-12",
-        "hora_inicio": "11:30",
-        "hora_fin": "12:00",
-        "estado": "cancelada",
-        "area": "Psicologia",
-        "paciente": {
-            "id": 2,
-            "nombre": "Responsable Predeterminado"
-        },
-        "terapeuta": {
-            "id": 1,
-            "nombre": "Lic. Ana Terapeuta"
-        },
-        "color": "#28a745"
     }
 ]

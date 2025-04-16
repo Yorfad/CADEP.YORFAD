@@ -1,1 +1,3 @@
-{"usuario":"ana.terapeuta","password":"admin123"}
+{"usuario":"ana.terapeuta","password":"admin123"}Paso X completado
+Paso X completado
+Paso X completado

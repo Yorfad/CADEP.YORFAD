@@ -1,5 +1,3 @@
-CREATE DATABASE  IF NOT EXISTS `hospital` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */ /*!80016 DEFAULT ENCRYPTION='N' */;
-USE `hospital`;
 -- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: hospital
@@ -163,7 +161,7 @@ CREATE TABLE `citas` (
   CONSTRAINT `citas_ibfk_1` FOREIGN KEY (`paciente_id`) REFERENCES `pacientes` (`id`),
   CONSTRAINT `citas_ibfk_2` FOREIGN KEY (`terapeuta_id`) REFERENCES `terapeutas` (`id`),
   CONSTRAINT `citas_ibfk_3` FOREIGN KEY (`sede_id`) REFERENCES `sedes` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -172,7 +170,7 @@ CREATE TABLE `citas` (
 
 LOCK TABLES `citas` WRITE;
 /*!40000 ALTER TABLE `citas` DISABLE KEYS */;
-INSERT INTO `citas` VALUES (1,2,1,NULL,'2025-04-10 16:23:00','es tonto','pendiente','2025-04-10 22:23:16','2025-04-10 22:23:16'),(2,3,1,NULL,'2025-04-11 22:15:00','motivo','pendiente','2025-04-11 04:15:19','2025-04-11 04:15:19'),(3,2,1,NULL,'2025-04-11 01:28:00','motivo2','pendiente','2025-04-11 06:27:34','2025-04-11 06:27:34'),(4,2,1,NULL,'2025-04-11 08:30:00','motivo3','reprogramada','2025-04-11 06:28:00','2025-04-11 07:29:44'),(5,2,1,NULL,'2025-04-12 11:30:00','motivo3','cancelada','2025-04-11 06:54:33','2025-04-11 07:32:12');
+INSERT INTO `citas` VALUES (1,1,1,NULL,'2025-04-12 10:00:00','motivo','pendiente','2025-04-11 17:39:22','2025-04-11 17:39:22'),(2,1,1,NULL,'2025-04-15 11:00:00','ygvyuv','pendiente','2025-04-11 17:47:12','2025-04-11 17:47:12');
 /*!40000 ALTER TABLE `citas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -366,7 +364,7 @@ CREATE TABLE `pacientes` (
   KEY `sede_id` (`sede_id`),
   CONSTRAINT `pacientes_ibfk_1` FOREIGN KEY (`responsable_id`) REFERENCES `pacientes` (`id`),
   CONSTRAINT `pacientes_ibfk_2` FOREIGN KEY (`sede_id`) REFERENCES `sedes` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -375,8 +373,43 @@ CREATE TABLE `pacientes` (
 
 LOCK TABLES `pacientes` WRITE;
 /*!40000 ALTER TABLE `pacientes` DISABLE KEYS */;
-INSERT INTO `pacientes` VALUES (2,'Responsable Predeterminado','0000000000001','1990-01-01','M','Direccin genrica','5555-0000','responsable@ejemplo.com',0,'universidad',NULL,1,1,0,'2025-04-10 21:10:48','2025-04-10 21:10:48'),(3,'Yair Alexander Morales Mejìa','2828070120204','2004-05-04','M','Estancia de la Virgen, Colonia El Porvenir','48393255','yairmorales267@gmail.com',1,'universidad',NULL,1,1,0,'2025-04-10 21:14:27','2025-04-10 21:14:27');
+INSERT INTO `pacientes` VALUES (1,'Responsable Predeterminado','0000000000001','1990-01-01','M','DirecciÃ³n genÃ©rica','5555-0000','responsable@ejemplo.com',0,'universidad',NULL,1,1,0,'2025-04-11 17:01:34','2025-04-11 17:01:34');
 /*!40000 ALTER TABLE `pacientes` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `recetas_medicas`
+--
+
+DROP TABLE IF EXISTS `recetas_medicas`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `recetas_medicas` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `paciente_id` int NOT NULL,
+  `terapeuta_id` int NOT NULL,
+  `fecha` date NOT NULL,
+  `descripcion` text NOT NULL,
+  `instrucciones` text,
+  `activo` tinyint(1) DEFAULT '1',
+  `sincronizado` tinyint(1) DEFAULT '0',
+  `creado_en` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `actualizado_en` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `paciente_id` (`paciente_id`),
+  KEY `terapeuta_id` (`terapeuta_id`),
+  CONSTRAINT `recetas_medicas_ibfk_1` FOREIGN KEY (`paciente_id`) REFERENCES `pacientes` (`id`),
+  CONSTRAINT `recetas_medicas_ibfk_2` FOREIGN KEY (`terapeuta_id`) REFERENCES `terapeutas` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `recetas_medicas`
+--
+
+LOCK TABLES `recetas_medicas` WRITE;
+/*!40000 ALTER TABLE `recetas_medicas` DISABLE KEYS */;
+/*!40000 ALTER TABLE `recetas_medicas` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -500,7 +533,7 @@ CREATE TABLE `terapeutas` (
 
 LOCK TABLES `terapeutas` WRITE;
 /*!40000 ALTER TABLE `terapeutas` DISABLE KEYS */;
-INSERT INTO `terapeutas` VALUES (1,1,1,1,'1234 56789 0123','2025-04-10 21:39:56','2025-04-10 21:39:56',0);
+INSERT INTO `terapeutas` VALUES (1,1,1,1,'1234 56789 0123','2025-04-11 17:01:35','2025-04-11 17:01:35',0);
 /*!40000 ALTER TABLE `terapeutas` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -521,7 +554,7 @@ CREATE TABLE `tokens` (
   PRIMARY KEY (`id`),
   KEY `usuario_id` (`usuario_id`),
   CONSTRAINT `tokens_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -530,7 +563,7 @@ CREATE TABLE `tokens` (
 
 LOCK TABLES `tokens` WRITE;
 /*!40000 ALTER TABLE `tokens` DISABLE KEYS */;
-INSERT INTO `tokens` VALUES (1,1,'b5c294e406d83fea71524933105c7a1e9cf7882031e2fcb5c8ba1aa7f1a8738f','2025-04-15 04:09:49','2025-04-16 04:09:49',1),(2,1,'0eca8df82865b0e66b5888dc6d313454c3a2baec5f4e15c1b9d80f8e8a454ece','2025-04-15 04:22:28','2025-04-16 04:22:28',1),(3,1,'dfd77067edc059970f5acdaba6acfe8ae52feaa16ad2816d93821cde006761d6','2025-04-15 04:29:35','2025-04-16 04:29:35',1),(4,1,'5eff73f0afa2bf712fb994d95475b8507f86968a3308eb045af8c20a52de7b90','2025-04-15 04:33:15','2025-04-16 04:33:15',1),(5,1,'0e60bdb951ea2135b5170b9b6565e73df83338fff176bb0e913e1c65fccfb490','2025-04-15 06:13:06','2025-04-16 06:13:06',1),(6,1,'7407c2ab14504d711638eee037725dda3bc4b23cf679d7d1d0b94e49b8909cb1','2025-04-15 06:22:41','2025-04-16 06:22:41',1),(7,1,'99713eb06869f1696c4d9bc7ecc08f2145529ba4c39bd77405b93f908206dd92','2025-04-15 07:15:35','2025-04-16 07:15:35',1),(8,1,'a9f8d79be3c76d4d9e5fe2d059ccbe44848a463c6e2e97dd2a85febc8b7423b1','2025-04-15 07:29:52','2025-04-16 07:29:52',1),(9,1,'61b9ada918c0a9dde376a5c6fcd04d64b8d905a74813d8d15ab61de328d5917e','2025-04-15 07:31:17','2025-04-16 07:31:17',1),(10,1,'312383b1116ef69d230b73a3535a5f6d1246daf25deb81c10bc0977d9b498141','2025-04-15 07:32:37','2025-04-16 07:32:37',1);
+INSERT INTO `tokens` VALUES (1,1,'6d4c044a141a9a4057434540f4d41959d83e1e556963a070aebeeb5d0439e71c','2025-04-16 06:20:38','2025-04-17 06:20:38',1);
 /*!40000 ALTER TABLE `tokens` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -573,7 +606,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (1,'Lic. Ana Terapeuta','ana.terapeuta','$2y$12$oVajYtELTL9chil3Bov.7uHn61twngZXQ5JzTNRI8CSy8nCA8nnL.',1,1,1,1,1,0,'2025-04-10 21:39:41','2025-04-15 04:08:30');
+INSERT INTO `usuarios` VALUES (1,'Lic. Ana Terapeuta','ana.terapeuta','$2y$12$dWOgVI1.3c8h1VyjI94DmOKVceHGqlNlZV9wf/oDp7L5O/UkzACaK',1,1,1,1,1,0,'2025-04-11 17:01:34','2025-04-16 06:20:26');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -594,4 +627,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-15 14:10:06
+-- Dump completed on 2025-04-16  0:23:53
