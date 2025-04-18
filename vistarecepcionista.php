@@ -50,12 +50,6 @@
           <label>Nombre completo:</label>
           <input type="text" id="nombre_completo" style="width:100%" required><br><br>
 
-          <label>CUI:</label>
-          <input type="text" id="cui" style="width:100%" required><br><br>
-
-          <label>Fecha de nacimiento:</label>
-          <input type="date" id="fecha_nacimiento" style="width:100%"><br><br>
-
           <label>Sexo:</label>
           <select id="sexo" style="width:100%">
             <option value="M">Masculino</option>
@@ -63,14 +57,17 @@
             <option value="Otro">Otro</option>
           </select><br><br>
 
-          <label>Dirección:</label>
-          <textarea id="direccion" style="width:100%"></textarea><br><br>
+          <label>Peso</label>
+          <input type="text" id="peso" style="width:100%" required><br><br>
 
-          <label>Teléfono:</label>
-          <input type="text" id="telefono" style="width:100%"><br><br>
+          <label>CUI:</label>
+          <input type="text" id="cui" style="width:100%" required><br><br>
 
-          <label>Correo:</label>
-          <input type="email" id="correo" style="width:100%"><br><br>
+          <label>Fecha de nacimiento:</label>
+          <input type="date" id="fecha_nacimiento" style="width:100%"><br><br>
+
+          <label>Lugar de nacimiento</label>
+          <textarea id="Lugar_nacimiento" style="width:100%"></textarea><br><br>
 
           <label>¿Estudia?</label>
           <input type="checkbox" id="estudia"><br><br>
@@ -83,6 +80,50 @@
             <option value="bachillerato">Bachillerato</option>
             <option value="universidad">Universidad</option>
             <option value="otro">Otro</option>
+          </select><br><br>
+
+          <label>Teléfono:</label>
+          <input type="text" id="telefono" style="width:100%"><br><br>
+
+          <label>Religion</label>
+          <input type="text" id="Religion" style="width:100%"><br><br>
+
+          <label>Estado civil</label>
+          <input type="text" id="estado_civil" style="width:100%"><br><br>
+
+          <label>Dirección:</label>
+          <textarea id="direccion" style="width:100%"></textarea><br><br>
+
+          <label>Correo:</label>
+          <input type="email" id="correo" style="width:100%"><br><br>
+
+          <label>En caso de emergencia comunicarse con:</label>
+          <input type="email" id="nombre_CE" style="width:100%"><br><br>
+
+          <label>Telefono</label>
+          <input type="email" id="telefono_CE" style="width:100%"><br><br>
+
+          <label>Nivel educativo:</label>
+          <select id="familiar_cadep" style="width:100%">
+            <option value="Si">Si</option>
+            <option value="No">No</option>
+          </select><br><br>
+
+          <label>¿Es menor?</label>
+          <input type="checkbox" id="es_menor"><br><br>
+
+          <label>Motivo de la consulta</label>
+          <input type="email" id="motivo_consulta" style="width:100%"><br><br>
+
+          <label>Terapias que recibe</label>
+          <select id="nivel_educativo" style="width:100%">
+            <option value="Psicologia">Psicología</option>
+            <option value="Fisioterapia">Fisioterapia</option>
+            <option value="Terapia_lenguaje">Terapia de lenguaje</option>
+            <option value="Terapia_ocupacional">Terapia ocupacional</option>
+            <option value="Eduacion_especial">Educación especial</option>
+            <option value="Estimulacion_temprana">Estimulación temprana</option>
+            <option value="Flexoterapia">Flexoterapia</option>
           </select><br><br>
 
           <label>Sede ID:</label>
@@ -121,9 +162,6 @@
             <option value="11:00">11:00 - 11:30</option>
             <option value="11:30">11:30 - 12:00</option>
           </select>
-
-          <label>Motivo:</label>
-          <textarea id="motivo" style="width:100%"></textarea><br><br>
 
           <button onclick="guardarCita()">Guardar</button>
           <button onclick="cerrarModalCita()">Cancelar</button>

@@ -32,3 +32,9 @@ try {
 } catch (PDOException $e) {
     Response::error("Error al crear la cita: " . $e->getMessage(), 500);
 }
+
+
+$stmt = $conn->prepare("UPDATE citas SET activo = 1, sincronizado = 0, actualizado_en = NOW() WHERE id = ?");
+$stmt->execute([$id]);
+
+Response::json(["mensaje" => "Cita reactivada correctamente"]);
